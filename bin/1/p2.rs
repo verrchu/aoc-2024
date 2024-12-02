@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
-static INPUT: &str = include_str!("../p1-input");
-// static INPUT: &str = include_str!("./p1-input-example");
+static INPUT: &str = include_str!("./input");
+// static INPUT: &str = include_str!("./example");
 
 fn main() {
     println!("SOLUTION: {}", solution(INPUT));
@@ -35,10 +35,10 @@ fn solution(input: &str) -> u64 {
 mod tests {
     use super::*;
 
-    static INPUT_EXAMPLE: &str = include_str!("../p1-input-example");
+    static INPUT: &str = include_str!("./example");
 
     #[test]
     fn test_example() {
-        assert_eq!(solution(INPUT_EXAMPLE), 31);
+        assert_eq!(solution(INPUT), 31);
     }
 }

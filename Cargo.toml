@@ -10,3 +10,11 @@ path = "bin/1/p1.rs"
 [[bin]]
 name = "1-p2"
 path = "bin/1/p2.rs"
+
+[[bin]]
+name = "2-p1"
+path = "bin/2/p1.rs"
+
+[[bin]]
+name = "2-p2"
+path = "bin/2/p2.rs"
