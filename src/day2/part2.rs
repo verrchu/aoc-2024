@@ -1,17 +1,13 @@
-static INPUT: &str = include_str!("./input");
-// static INPUT: &str = include_str!("./example");
-
-fn main() {
-    println!("SOLUTION: {}", solution(INPUT));
-}
-
-fn solution(input: &str) -> usize {
+pub fn solution(input: &str) -> usize {
     input
         .lines()
         .map(|line| {
-            let report = line.split_whitespace().map(|level| level.parse().unwrap());
+            let report = line
+                .split_whitespace()
+                .map(|level| level.parse().unwrap())
+                .collect::<Vec<_>>();
 
-            is_safe_report(report)
+            is_safe_report(report.iter().copied()) || is_almost_safe_report(&report)
         })
         .filter(|x| *x)
         .count()
@@ -23,10 +19,7 @@ enum Direaction {
     Down,
 }
 
-fn is_safe_report<I>(report: I) -> bool
-where
-    I: Iterator<Item = i64>,
-{
+fn is_safe_report(report: impl Iterator<Item = i64>) -> bool {
     let mut report = report.peekable();
 
     let Some(a) = report.next() else {
@@ -63,14 +56,16 @@ where
     true
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+fn is_almost_safe_report(report: &[i64]) -> bool {
+    for i in 0..report.len() {
+        let l = &report[0..i];
+        let r = &report[(i + 1)..report.len()];
 
-    static INPUT: &str = include_str!("./example");
-
-    #[test]
-    fn test_example() {
-        assert_eq!(solution(INPUT), 2);
+        let sub_report = l.iter().chain(r.iter()).copied();
+        if is_safe_report(sub_report) {
+            return true;
+        }
     }
+
+    false
 }

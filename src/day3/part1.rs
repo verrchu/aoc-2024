@@ -1,23 +1,15 @@
-static INPUT: &str = include_str!("./input");
-// static INPUT: &str = include_str!("./p2-example");
-
-fn main() {
-    println!("SOLUTION: {}", solution(INPUT));
-}
-
-fn solution(input: &str) -> u64 {
-    let mut toggle = true;
+pub fn solution(input: &str) -> u64 {
     let mut sum = 0;
     for line in input.lines() {
-        process_line(line, &mut sum, &mut toggle);
+        process_line(line, &mut sum);
     }
 
     sum
 }
 
-fn process_line(mut line: &str, sum: &mut u64, toggle: &mut bool) {
+fn process_line(mut line: &str, sum: &mut u64) {
     loop {
-        let (remaining, factors) = probe(line, toggle);
+        let (remaining, factors) = probe(line);
         if let Some(remaining) = remaining {
             line = remaining;
         } else {
@@ -30,22 +22,7 @@ fn process_line(mut line: &str, sum: &mut u64, toggle: &mut bool) {
     }
 }
 
-fn probe<'line>(line: &'line str, toggle: &mut bool) -> (Option<&'line str>, Option<(u64, u64)>) {
-    if *toggle {
-        if let Some(line) = line.strip_prefix("don't()") {
-            *toggle = false;
-            return (Some(line), None);
-        }
-    } else if !*toggle {
-        if let Some(line) = line.strip_prefix("do()") {
-            *toggle = true;
-            return (Some(line), None);
-        } else {
-            let remaining = line.find("do()").map(|idx| &line[idx..]);
-            return (remaining, None);
-        }
-    }
-
+fn probe(line: &str) -> (Option<&str>, Option<(u64, u64)>) {
     if line.len() < 4 {
         return (None, None);
     }
@@ -129,17 +106,5 @@ fn probe<'line>(line: &'line str, toggle: &mut bool) -> (Option<&'line str>, Opt
                 return (Some(line.as_str()), None);
             }
         }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    static INPUT: &str = include_str!("./p2-example");
-
-    #[test]
-    fn test_example() {
-        assert_eq!(solution(INPUT), 48);
     }
 }
