@@ -18,3 +18,11 @@ path = "bin/2/p1.rs"
 [[bin]]
 name = "2-p2"
 path = "bin/2/p2.rs"
+
+[[bin]]
+name = "3-p1"
+path = "bin/3/p1.rs"
+
+[[bin]]
+name = "3-p2"
+path = "bin/3/p2.rs"
