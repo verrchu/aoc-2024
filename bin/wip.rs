@@ -1,5 +1,5 @@
-use aoc_2024::day4::{part2, INPUT};
+use aoc_2024::day5::{part2 as solution, INPUT as input};
 
 fn main() {
-    println!("{}", part2(INPUT));
+    println!("{}", solution(input));
 }
