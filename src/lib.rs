@@ -124,3 +124,14 @@ pub mod day12 {
     mod part2;
     pub use part2::solution as part2;
 }
+
+pub mod day13 {
+    pub static INPUT: &str = include_str!("./day13/input");
+    pub static EXAMPLE: &str = include_str!("./day13/example");
+
+    mod part1;
+    pub use part1::solution as part1;
+
+    mod part2;
+    pub use part2::solution as part2;
+}
