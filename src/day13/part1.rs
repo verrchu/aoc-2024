@@ -1,4 +1,3 @@
-
 pub fn solution(input: &str) -> i64 {
     let parse_button = |s: &str| -> (i64, i64) {
         let (_button, rest) = s.split_once(": ").unwrap();
