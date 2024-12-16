@@ -49,13 +49,12 @@ impl Board {
         let mut buf = raw
             .lines()
             .flat_map(|line| {
-                line.chars()
-                    .flat_map(|c| match c {
-                        '.' | '#' => [c; 2],
-                        '@' => ['@', '.'],
-                        'O' => ['[', ']'],
-                        c => unreachable!("DOUND THIS: {c}"),
-                    })
+                line.chars().flat_map(|c| match c {
+                    '.' | '#' => [c; 2],
+                    '@' => ['@', '.'],
+                    'O' => ['[', ']'],
+                    c => unreachable!("DOUND THIS: {c}"),
+                })
             })
             .collect::<Vec<_>>();
 
@@ -278,7 +277,6 @@ impl Board {
 
 #[cfg(test)]
 mod tests {
-    
 
     use super::*;
 
