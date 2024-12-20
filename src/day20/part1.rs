@@ -1,35 +1,73 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
+
+#[derive(PartialEq)]
+enum Direction {
+    N,
+    E,
+    S,
+    W,
+}
 
 pub fn solution(input: &str) -> u64 {
     let mut board = Board::new(input);
     let (sx, sy) = board.take_start();
-    // let (ex, ey) = board.take_end();
+    let (ex, ey) = board.take_end();
 
     let mut dp = HashMap::<(usize, usize), u64>::new();
     flood(sx, sy, 0, &board, &mut dp);
 
-    // println!("{}", dp[&(ex, ey)]);
+    println!("{}", dp[&(ex, ey)]);
 
-    let cheats = find_cheats(&board, &dp);
+    let mut winning_paths = HashSet::<(usize, usize)>::new();
+    track(ex, ey, &board, &dp, &mut winning_paths);
+
+    println!("WINNING - {}", winning_paths.len());
+
+    todo!()
+
+    // let cheats = find_cheats(&board, &dp);
     // for (a, b) in cheats {
     //     println!("{a} -> {b}");
     // }
 
-    cheats
-        .into_iter()
-        .filter_map(|(save, n)| (save >= 100).then_some(n))
-        .sum()
+    // cheats
+    //     .into_iter()
+    //     .filter_map(|(save, n)| (save >= 100).then_some(n))
+    //     .sum()
+}
+
+fn track(
+    x: usize,
+    y: usize,
+    board: &Board,
+    dp: &HashMap<(usize, usize), u64>,
+    winning_paths: &mut HashSet<(usize, usize)>,
+) {
+    let score = dp[&(x, y)];
+    if !winning_paths.insert((x, y)) || score == 0 {
+        return;
+    }
+
+    let mut track_further = |d| {
+        let (nx, ny) = match d {
+            Direction::N => (x - 1, y),
+            Direction::E => (x, y + 1),
+            Direction::S => (x + 1, y),
+            Direction::W => (x, y - 1),
+        };
+
+        if board.get(nx, ny) == '.' && dp[&(nx, ny)] == score - 1 {
+            track(nx, ny, board, dp, &mut *winning_paths);
+        }
+    };
+
+    track_further(Direction::N);
+    track_further(Direction::E);
+    track_further(Direction::S);
+    track_further(Direction::W);
 }
 
 fn find_cheats(board: &Board, dp: &HashMap<(usize, usize), u64>) -> HashMap<u64, u64> {
-    #[derive(PartialEq)]
-    enum Direction {
-        N,
-        E,
-        S,
-        W,
-    }
-
     let get_cheat_score = |x, y, d| {
         let ((n1x, n1y), (n2x, n2y)) = match d {
             Direction::N => ((x - 1, y), (x as isize - 2, y as isize)),
